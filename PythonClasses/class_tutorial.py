@@ -3,18 +3,20 @@
 '''
 Scenario: set up appropriate classes for
     Planet -> ... -> Country -> ... -> houses/parks -> apartments -> people
-Goal: Given the details of an apartment, determine if this apartment is available in a given planet/country/....
+Goal: Given the details of an apartment, determine if such an apartment is available in a given planet/country/....
 
 Street as a class with name, houses, and other details.
 House as a class with house number and apartments.
 Apartment as a class with apartment number and number of residents.
 Use methods to get total houses in the street, total apartments in a house, ...
 '''
-## for some number operations
+## For some number operations
 import numpy as np
 #np.random.seed(1)
+# For clear separation of outputs from this script
+print("\n")
 
-# Class for planet
+# Planet: Class for a planet entity containing SuperNations
 class Planet:
     def __init__(self, Name=None, Type=None):
         self.Name = Name
@@ -30,7 +32,7 @@ class Planet:
         Method to receive a list of streets
         '''
         StreetsInPlanet = []
-        # Create a simple list of street objects in all the cities
+        # Create a simple list of street objects in all the cities within
         for supernation in self.SuperNationList:
             StreetsInPlanet.extend(supernation.GetStreets())
         return StreetsInPlanet
@@ -40,6 +42,7 @@ class Planet:
         Method to receive a list of buildings
         '''
         BuildingsInPlanet = []
+        # Use the list of streets to get the buildings
         for street in self.GetStreets():
             BuildingsInPlanet.extend(street.GetBuildings())
         return BuildingsInPlanet
@@ -49,11 +52,12 @@ class Planet:
         Method to receive a list of apartments
         '''
         ApartmentsInPlanet = []
+        # Use the list of buildings to get the apartments
         for building in self.GetBuildings():
             ApartmentsInPlanet.extend(building.GetApartments())
         return ApartmentsInPlanet
 
-# Class for international entities. 
+# SuperNation: Class for international entities containing Nations. 
 #   e.g. Continents, United Nations, European Union, African Union, SAARC, Oceans, Seas,...
 class SuperNation:
     def __init__(self, Name=None, Type=None):
@@ -67,7 +71,7 @@ class SuperNation:
 
     def GetStreets(self):
         StreetsInSuperNation = []
-        # Create a simple list of street objects in all the cities
+        # Create a simple list of street objects in all the cities within
         for nation in self.NationList:
             StreetsInSuperNation.extend(nation.GetStreets())
         return StreetsInSuperNation
@@ -90,7 +94,7 @@ class SuperNation:
             ApartmentsInSuperNation.extend(building.GetApartments())
         return ApartmentsInSuperNation
 
-# Class for a national level entities containing states, e.g. country/nation
+# Nation: Class for a national level entities containing States
 class Nation:
     def __init__(self, Name=None, Type=None):
         self.Name = Name
@@ -103,7 +107,7 @@ class Nation:
 
     def GetStreets(self):
         StreetsInNation = []
-        # Create a simple list of street objects in all the cities
+        # Create a simple list of street objects in all the cities within
         for state in self.StateList:
             StreetsInNation.extend(state.GetStreets())
         return StreetsInNation
@@ -126,7 +130,7 @@ class Nation:
             ApartmentsInNation.extend(building.GetApartments())
         return ApartmentsInNation
 
-# Class for a sub-national level entities containing cities, e.g. state/district/zone
+# State: Class for a sub-national level entities (e.g. state/district/zone) containing Cities
 class State:
     def __init__(self, Name=None, Type=None):
         self.Name = Name
@@ -139,7 +143,7 @@ class State:
     
     def GetStreets(self):
         StreetsInState = []
-        # Create a simple list of street objects in all the cities
+        # Create a simple list of street objects in all the cities within
         for city in self.CityList:
             StreetsInState.extend(city.GetStreets())
         return StreetsInState
@@ -162,7 +166,7 @@ class State:
             ApartmentsInState.extend(building.GetApartments())
         return ApartmentsInState
 
-# Class for a city/town/village containing streets
+# City: Class for a city/town/village containing Streets
 class City:
     def __init__(self, Name=None, Type=None):
         self.Name = Name
@@ -195,7 +199,9 @@ class City:
         return ApartmentsInCity
 
 
-# Class for street containing buildings(houses, businesses, schools,...) and spaces(parks, parking lots, empty land, ...)
+# Street: Class for a street containing 
+#   - buildings(houses, businesses, schools,...) and 
+#   - spaces(parks, parking lots, empty land, ...)
 class Street:
     # Default class attributes ("is a" components), that can be inherited from parent classes
     # instance attributes ("has a" components), unique for each Street instance
@@ -211,9 +217,9 @@ class Street:
     
     def SpawnStreetObjects(self,StreetObjectCategories, StreetCapacity):
         '''
-        Method to create a list of objects in a Street using: \n
-        \t random elements from StreetObjectCategories, and
-        \t total objects = StreetCapacity.
+        Method to create a list of objects in a Street: \n
+        \t use random elements from StreetObjectCategories, and
+        \t ensure total objects = StreetCapacity.
         '''
         for id in range(StreetCapacity):
             # choose a random element from StreetObjectCategories
@@ -224,7 +230,9 @@ class Street:
     
     def AddBuildingObject(self, Type=None, NumApartments=None, NumResidents=None):
         '''
-        Method to add a new Building Object to the Street at some later point
+        Method to add a new Building Object to the Street at some later point \n
+        \t NumApartments = maximum number of apartments allowed, and
+        \t NumResidents = maximum number of residents per apartment
         '''
         print("Adding new StreetObject to %s..."%self.Name)
         NewObject = StreetObject(Type, len(self.StreetObjects)+1)
@@ -251,6 +259,7 @@ class Street:
         '''
         BuildingsInStreet = []
         for item in self.StreetObjects:
+            # Check if the item is a Building
             if item.Category in BuildingCategories:
                 BuildingsInStreet.append(item)
         return BuildingsInStreet
@@ -273,7 +282,7 @@ class Street:
               % (self.Name, self.Type, len(self.StreetObjects)))
 
 
-# Class for an object in a street
+# StreetObject: Class for an object in a street
 class StreetObject:    
     # instance attributes
     def __init__(self, CategoryName, ObjectNumber):
@@ -289,12 +298,12 @@ class StreetObject:
     
     def SpawnApartments(self, NumApartments):
         '''
-        Method to create apartments (up to NumApartments)in a StreetObject if it is a building.
+        Method to create apartments (up to NumApartments) in a StreetObject if it is a building.
         '''
         # use global variable BuildingCategories to check if the StreetObject is a building
         if self.Category in BuildingCategories:
             self.NumApartments = NumApartments
-            # Create a list of Apartment objects with random population/capacity
+            # Create a list of Apartment objects
             self.ApartmentList = [Apartment(val+1) for val in range(self.NumApartments)]
             # print("Created %i Apartment objects in the building."%NumApartments)
         # else:
@@ -313,7 +322,7 @@ class StreetObject:
 
 
 
-# Class for apartments/compartments in a building
+# Apartment: Class for apartments/compartments in a building
 class Apartment:
     # instance attributes
     def __init__(self, Number):
@@ -342,7 +351,7 @@ class Apartment:
         print("Apartment %i contains %i residents" %
               (self.Number, self.NumResidents))
 
-# Class for resident of an apartment/house/building
+# Resident: Class for resident of an apartment/house/building
 class Resident:
     #instance attributes
     def __init__(self,Number=None,Name=None,Age=None,Gender=None):
@@ -351,93 +360,14 @@ class Resident:
         self.Age = Age
         self.Gender = Gender
 
-# Class for room of an apartment/house/building
+# Room: Class for room of an apartment/house/building
 class Room:
     def __init__(self,Number=None,Type=None):
         self.Number = Number
         self.Type = Type
 
 
-def SearchInStreet(StreetContainer,AptNumber=None,AptResidents=None):
-    '''
-    Function to search for a certain apartment ...
-    \t StreetContainer : any object with GetStreets() method
-    \t AptNumber       : apartment number to search for
-    \t AptResidents    : number of residents in the apartment
-    '''
-    for street in StreetContainer.GetStreets():
-        found_in_houses = []
-        for house in street.StreetObjects:
-            if house.NumApartments >= AptNumber:
-                for apt in house.ApartmentList:
-                    if apt.Number==AptNumber and apt.NumResidents == AptResidents:
-                        found_in_houses.append(house.Number)
 
-        if not found_in_houses:
-            print("Description not matched in %s."%street.Name)
-        else:
-            print("Description matched in following houses in %s."%street.Name)
-            print(found_in_houses)
-
-
-# Create a planet
-Earth = Planet(Name="Earth",Type="Habitable")
-# Create a supernation entity
-Europe = SuperNation(Name="Europe", Type="Continent")
-Pacific = SuperNation(Name="Pacific", Type="Ocean")
-# Create a nation entity
-Germany = Nation(Name="Germany",Type="Country")
-# Create a sub-national entity
-NorthRheinWestf = State(Name="NRW", Type="State")
-BerlinState = State(Name="Berlin", Type="State")
-# Create a city entity
-Dusseldorf = City(Name="Duesseldorf", Type="City")
-Cologne = City(Name="Cologne",Type="City")
-Berlin = City(Name="Berlin", Type="CapitalCity")
-# A special type of city containing moving Aircraft Carriers of each nation
-USAirCarriers = City(Name="USAirCarriers", Type="Special")
-
-# Create a street entity
-Glockenstrasse = Street(Name="Glockenstrasse", Type="City")
-Merheimerstrasse = Street(Name="Merheimerstrasse", Type="City")
-FrankfurterAllee = Street(Name="Frankfurter Allee", Type="City")
-USAirCarrier1 = Street(Name="USAirCarrier1", Type="Ship")
-
-# Begin to build cities with streets
-Dusseldorf.StreetList.append(Glockenstrasse)
-Cologne.StreetList.append(Merheimerstrasse)
-Berlin.StreetList.append(FrankfurterAllee)
-USAirCarriers.StreetList.append(USAirCarrier1)
-
-# Build states
-NorthRheinWestf.CityList.extend((Dusseldorf,Cologne))
-BerlinState.CityList.append(Berlin)
-
-# Build nation
-Germany.StateList.extend((NorthRheinWestf,BerlinState))
-
-# Build supernation
-Europe.NationList.append(Germany)
-Pacific.NationList.append(USAirCarriers)
-
-# Build planet
-Earth.SuperNationList.extend((Europe,Pacific))
-
-
-# Set up categories of objects to include in the street
-BuildingCategories = ["House", "School", "Shopping Mall", "Office"]
-OtherCategories = ["Park", "Empty", "Parking Lot", "Farm Land"]
-StreetObjectCategoryList = BuildingCategories + OtherCategories
-
-# Define minimum and maximum objects allowed in a street
-StreetCapacityMin = 5
-StreetCapacityMax = 20
-# Define minimum and maximum apartments allowed in a building
-BuildingCapacityMin = 1
-BuildingCapacityMax = 30
-#Define minimum and maximum residents in an apartment
-ApartmentCapacityMin = 1
-ApartmentCapacityMax = 6
 
 def CreateStreetObjects(StreetContainer):
     '''
@@ -471,33 +401,105 @@ def CreateResidents(ApartmentsContainer):
     for apartment in ApartmentsList:
         apartment.SpawnResidents(np.random.randint(ApartmentCapacityMin, ApartmentCapacityMax))
 
+
+def SearchInStreet(StreetContainer, AptNumber=None, AptResidents=None):
+    '''
+    Function to search for a certain apartment ...
+    \t StreetContainer : any object with GetStreets() method
+    \t AptNumber       : apartment number to search for
+    \t AptResidents    : number of residents in the apartment
+    '''
+
+    # Indicate that all initialization is complete before searching and printing results
+    print("\nInitialization complete. Beginning search...\n")
+
+    for street in StreetContainer.GetStreets():
+        found_in_houses = []
+        for house in street.StreetObjects:
+            if house.NumApartments >= AptNumber:
+                for apt in house.ApartmentList:
+                    if apt.Number == AptNumber and apt.NumResidents == AptResidents:
+                        found_in_houses.append(house.Number)
+
+        if not found_in_houses:
+            print("Description not matched in %s." % street.Name)
+        else:
+            print("Description matched in following houses in %s." % street.Name)
+            print(found_in_houses)
+
+# Create a planet
+Earth = Planet(Name="Earth", Type="Habitable")
+# Create a supernation entity
+Europe = SuperNation(Name="Europe", Type="Continent")
+Pacific = SuperNation(Name="Pacific", Type="Ocean")
+# Create a nation entity
+Germany = Nation(Name="Germany", Type="Country")
+# Create a sub-national entity
+NorthRheinWestf = State(Name="NRW", Type="State")
+BerlinState = State(Name="Berlin", Type="State")
+# Create a city entity
+Dusseldorf = City(Name="Duesseldorf", Type="City")
+Cologne = City(Name="Cologne", Type="City")
+Berlin = City(Name="Berlin", Type="CapitalCity")
+# A special type of city containing moving Aircraft Carriers of a nation
+USAirCarriers = City(Name="USAirCarriers", Type="Special")
+
+# Create a street entity along with the type of the street
+Glockenstrasse = Street(Name="Glockenstrasse", Type="City")
+Merheimerstrasse = Street(Name="Merheimerstrasse", Type="City")
+FrankfurterAllee = Street(Name="Frankfurter Allee", Type="City")
+USAirCarrier1 = Street(Name="USAirCarrier1", Type="Ship")
+
+# Begin to build cities with streets
+Dusseldorf.StreetList.append(Glockenstrasse)
+Cologne.StreetList.append(Merheimerstrasse)
+Berlin.StreetList.append(FrankfurterAllee)
+USAirCarriers.StreetList.append(USAirCarrier1)
+
+# Build states
+NorthRheinWestf.CityList.extend((Dusseldorf, Cologne))
+BerlinState.CityList.append(Berlin)
+
+# Build nation
+Germany.StateList.extend((NorthRheinWestf, BerlinState))
+
+# Build supernation
+Europe.NationList.append(Germany)
+Pacific.NationList.append(USAirCarriers)
+
+# Build planet
+Earth.SuperNationList.extend((Europe, Pacific))
+
+
+# Set up categories of objects to include in the street
+BuildingCategories = ["House", "School", "Shopping Mall", "Office"]
+OtherCategories = ["Park", "Empty", "Parking Lot", "Farm Land"]
+StreetObjectCategoryList = BuildingCategories + OtherCategories
+
+# Define minimum and maximum objects allowed in a street
+StreetCapacityMin = 5
+StreetCapacityMax = 20
+# Define minimum and maximum apartments allowed in a building
+BuildingCapacityMin = 1
+BuildingCapacityMax = 30
+#Define minimum and maximum residents in an apartment
+ApartmentCapacityMin = 1
+ApartmentCapacityMax = 6
+
+
 # Create objects in the streets
 CreateStreetObjects(Earth)
 # Create apartments in the buildings
 CreateApartments(Earth)
 # Create residents in the apartments
 CreateResidents(Earth)
-# Add new StreetObjects to a Street
+# Add new StreetObjects to some Street entities
 Glockenstrasse.AddNonBuildingObject(Type="Empty")
 Merheimerstrasse.AddBuildingObject(Type="House",NumApartments=5,NumResidents=2)
 
-# StreetList = Earth.GetStreets()
-# print("List of all the streets on Earth:")
-# print([street.Name for street in StreetList])
-# # Create objects in the streets
-# for MyStreet in StreetList:
-#     MyStreet.CreateObjects(StreetObjectCategoryList,np.random.randint(StreetCapacityMin,StreetCapacityMax))
-#     MyStreet.print_info()
-#     # Create apartments in buildings
-#     for MyStreetObject in MyStreet.StreetObjects:
-#         MyStreetObject.CreateApartments(np.random.randint(BuildingCapacityMin,BuildingCapacityMax))
-#         # Create residents in apartments
-#         for MyApartment in MyStreetObject.ApartmentList:
-#             MyApartment.CreateResidents(np.random.randint(ApartmentCapacityMin,ApartmentCapacityMax))
 
-# # Add new StreetObjects to a Street
-# StreetList[0].AddNonBuildingObject(Type="Empty")
-# StreetList[1].AddBuildingObject(Type="House",NumApartments=5,NumResidents=2)
+
+
 
 
 
@@ -507,3 +509,5 @@ user_apartment_residents = 2
 
 SearchInStreet(Earth,AptNumber=user_apartment_num,AptResidents=user_apartment_residents)
 
+# For clear separation of outputs from this script
+print("\n")
