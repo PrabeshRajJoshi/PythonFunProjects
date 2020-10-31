@@ -9,7 +9,7 @@ Use methods to get total houses in the street, total apartments in a house, ...
 
 import numpy as np
 
-from EntityCreators import StreetObjectCategories
+from StreetBuilders import StreetObjectCategories
 
 # Planet: Class for a planet entity containing SuperNations
 class Planet:
@@ -211,18 +211,18 @@ class Street:
         # Define a list of objects for the Street ("has a" component)
         self.StreetObjects = []
     
-    def SpawnStreetObjects(self,StreetObjectCategories):
+    def SpawnStreetObjects(self,categories_list):
         '''
         Method to create a list of objects in a Street: \n
-        \t use random elements from StreetObjectCategories, and
+        \t use random elements from categories_list, and
         \t ensure total objects = Street.Capacity
         '''
         for id in range(self.Capacity):
-            # choose a random element from StreetObjectCategories
-            StreetObjectID = np.random.randint(0, len(StreetObjectCategories))
-            StreetObjectCategory = StreetObjectCategories[StreetObjectID]
+            # choose a random element from categories_list
+            StreetObjectID = np.random.randint(0, len(categories_list))
+            category = categories_list[StreetObjectID]
             # add it to the list of objects in the street
-            self.StreetObjects.append(StreetObject(StreetObjectCategory, id+1))
+            self.StreetObjects.append(StreetObject(category, id+1))
     
     def AddBuildingObject(self, Type=None, NumApartments=None, NumResidents=None):
         '''
