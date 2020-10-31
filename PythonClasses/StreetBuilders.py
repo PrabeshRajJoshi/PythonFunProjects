@@ -37,3 +37,16 @@ def CreateStreetObjects(StreetContainer, categories_list):
     for street in StreetList:
         street.SpawnStreetObjects(categories_list)
         street.print_info()
+
+def CreateApartments(BuildingsContainer):
+    '''
+    Function to create random Apartments in all buildings found in BuildingsContainer
+    \t anywhere between 1 and 20 apartments are created!
+    '''
+    BuildingsList = BuildingsContainer.GetBuildings()
+    NumAptMin = 1
+    NumAptMax = 20
+    print("Creating apartment objects in %i buildings in %s ..."%(len(BuildingsList),BuildingsContainer.Name))
+    # Create apartments in buildings
+    for building in BuildingsList:
+        building.SpawnApartments(np.random.randint(NumAptMin, NumAptMax))
