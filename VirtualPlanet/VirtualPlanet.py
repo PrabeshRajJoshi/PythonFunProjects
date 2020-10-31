@@ -49,10 +49,10 @@ StreetCapacityMin = 5
 StreetCapacityMax = 20
 
 # Create a street entity, specify the type and capacity of the street
-Glockenstrasse = LE.Street(Name="Glockenstrasse", Type="City", Capacity=np.random.randint(StreetCapacityMin, StreetCapacityMax) )
-Merheimerstrasse = LE.Street(Name="Merheimerstrasse", Type="City", Capacity=np.random.randint(StreetCapacityMin, StreetCapacityMax) )
-FrankfurterAllee = LE.Street(Name="Frankfurter Allee", Type="City", Capacity=np.random.randint(StreetCapacityMin, StreetCapacityMax) )
-USAirCarrier1 = LE.Street(Name="USAirCarrier1", Type="Ship", Capacity=np.random.randint(StreetCapacityMin, StreetCapacityMax) )
+Glockenstrasse = LE.Street(Name="Glockenstrasse", Type="City" )
+Merheimerstrasse = LE.Street(Name="Merheimerstrasse", Type="City" )
+FrankfurterAllee = LE.Street(Name="Frankfurter Allee", Type="City" )
+USAirCarrier1 = LE.Street(Name="USAirCarrier1", Type="Ship" )
 
 # Begin to build cities with streets
 Dusseldorf.StreetList.append(Glockenstrasse)
@@ -75,17 +75,6 @@ Pacific.NationList.append(USAirCarriers)
 Earth.SuperNationList.extend((Europe, Pacific))
 
 
-# # Set up categories of objects to include in the street
-# BuildingCategories = ["House", "School", "Shopping Mall", "Office"]
-# OtherCategories = ["Park", "Empty", "Parking Lot", "Farm Land"]
-# StreetObjectCategoryList = BuildingCategories + OtherCategories
-
-# Define minimum and maximum apartments allowed in a building
-BuildingCapacityMin = 1
-BuildingCapacityMax = 30
-#Define minimum and maximum residents in an apartment
-ApartmentCapacityMin = 1
-ApartmentCapacityMax = 6
 
 # Specify a list of various categories of objects to be created in streets
 DefaultCategories = StreetBuilders.StreetObjectCategories()

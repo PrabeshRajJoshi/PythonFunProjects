@@ -206,7 +206,11 @@ class Street:
         self.Location = Location
         self.State = State
         self.Country = Country
-        self.Capacity = Capacity
+
+        # Define minimum and maximum objects allowed in a street
+        StreetCapacityMin = 5
+        StreetCapacityMax = 20
+        self.Capacity = np.random.randint(StreetCapacityMin, StreetCapacityMax)
 
         # Define a list of objects for the Street ("has a" component)
         self.StreetObjects = []
