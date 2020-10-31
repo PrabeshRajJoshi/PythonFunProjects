@@ -50,3 +50,16 @@ def CreateApartments(BuildingsContainer):
     # Create apartments in buildings
     for building in BuildingsList:
         building.SpawnApartments(np.random.randint(NumAptMin, NumAptMax))
+
+def CreateResidents(ApartmentsContainer):
+    '''
+    Function to create random Residents in all apartments found in ApartmentsContainer
+    \t anywhere between 1 and 5 residents are created!
+    '''
+    ApartmentsList = ApartmentsContainer.GetApartments()
+    NumResidendsMin = 1
+    NumResidentsMax = 5
+    print("Populating %i apartments in %s ..."%(len(ApartmentsList),ApartmentsContainer.Name))
+    # Create residents in apartments
+    for apartment in ApartmentsList:
+        apartment.SpawnResidents(np.random.randint(NumResidendsMin, NumResidentsMax))
