@@ -25,3 +25,15 @@ class StreetObjectCategories:
     
     def GetAll(self):
         return self._Buildings + self._NonBulidings
+
+
+def CreateStreetObjects(StreetContainer, categories_list):
+    '''
+    Function to create random StreetObject in all streets found in StreetContainer
+    '''
+    StreetList = StreetContainer.GetStreets()
+    print("Creating street objects in %i streets of %s ..."%(len(StreetList),StreetContainer.Name))
+
+    for street in StreetList:
+        street.SpawnStreetObjects(categories_list)
+        street.print_info()
