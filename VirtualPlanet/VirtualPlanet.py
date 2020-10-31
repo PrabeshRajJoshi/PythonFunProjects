@@ -19,7 +19,7 @@ import numpy as np
 import LocationEntities as LE
 
 ## import creator functions from custom module
-import EntityCreators
+import StreetBuilders
 
 ## import searching functions from custom module
 import EntitySearchers
@@ -88,14 +88,14 @@ ApartmentCapacityMin = 1
 ApartmentCapacityMax = 6
 
 # Specify a list of various categories of objects to be created in streets
-DefaultCategories = EntityCreators.StreetObjectCategories()
+DefaultCategories = StreetBuilders.StreetObjectCategories()
 
 # Create objects in the streets
-EntityCreators.CreateStreetObjects(Earth, DefaultCategories.GetAll() )
+StreetBuilders.CreateStreetObjects(Earth, DefaultCategories.GetAll() )
 # Create apartments in the buildings
-EntityCreators.CreateApartments(Earth)
+StreetBuilders.CreateApartments(Earth)
 # Create residents in the apartments
-EntityCreators.CreateResidents(Earth)
+StreetBuilders.CreateResidents(Earth)
 # Add new StreetObjects to some Street entities
 Glockenstrasse.AddNonBuildingObject(Type="Empty")
 Merheimerstrasse.AddBuildingObject(Type="House",NumApartments=5,NumResidents=2)
