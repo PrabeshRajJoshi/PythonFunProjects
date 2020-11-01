@@ -1,3 +1,1 @@
-# PythonFunProjects
-
-Fun projects in python to learn dev ecosystems
+A fun project in python to create a virutal planet entity
